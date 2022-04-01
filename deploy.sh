@@ -17,6 +17,6 @@ git add -A
 git commit -m 'deploy'
 
 # git push -f "https://gitee.com/lisheng741/blog.git" master:gh-pages
-git push -f git@github.com:lisheng741/Blog.git master:gh-pages
+git push -f git@github.com:lisheng741/blog.git master:gh-pages
 
 cd -
