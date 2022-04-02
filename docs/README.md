@@ -3,7 +3,7 @@ home: true
 heroText: 首页
 actionText: 进入 →
 actionLink: /record/
-footer: MIT Licensed | Copyright © 2022-lisheng741zh 
+footer: MIT Licensed | Copyright © 2022-lisheng741
 ---
 
 
@@ -18,6 +18,11 @@ footer: MIT Licensed | Copyright © 2022-lisheng741zh
 
 
 
-## 目录
+
+## 文件夹目录
 
 - [记录](/record/)
+
+- [前端](/fronted/)
+
+- [后端](/backend/)

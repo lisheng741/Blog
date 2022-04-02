@@ -12,9 +12,9 @@ module.exports = {
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
-      { text: '记录', link: '/record/' }
-      // { text: '前端', link: '/fronted/' },
-      // { text: '6后端', link: '/backend/' },
+      { text: '记录', link: '/record/' },
+      { text: '前端', link: '/fronted/' },
+      { text: '后端', link: '/backend/' },
     ],
     sidebar: utils.inferSiderbars(),
     lastUpdated: '上次更新',
