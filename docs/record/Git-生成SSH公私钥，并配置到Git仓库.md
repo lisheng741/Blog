@@ -1,12 +1,12 @@
 # Git-生成SSH公私钥，并配置到Git仓库
 
-
+[[toc]]
 
 ## 前言
 
 我们在 Git 下载提交时，一般使用的是 Https 的方式，细心的小伙伴会注意到另一种方式 SSH。
 
-另外，一般使用 Https 方式向 Github/Gitee 提交代码时，需要验证账号密码（Github 目前似乎已经不支持使用账号密码，必须使用 SSH）。
+另外，一般使用 Https 方式向 Github/Gitee 提交代码时，需要验证账号密码，而 SSH 方式只要配置好公私钥则可以不验证账号密码（Github 目前似乎已经不支持使用账号密码，必须使用 SSH）。
 
 本文将介绍如何使用 Git 的 SSH 方式。
 
@@ -56,7 +56,7 @@ ssh-keygen -t rsa -C "your_email@example.com"
 Enter file in which to save the key (/c/Users/CL/.ssh/id_rsa): <输入秘钥名称/直接回车>
 ```
 
-注：本例中，输入秘钥名称为：lisheng741
+注：本例中，输入秘钥名称为：test123
 
 **4 输入密码和确认密码**
 
@@ -70,8 +70,8 @@ Enter same passphrase again:
 会在文件夹下，生成两个文件：
 
 ```bash
-lisheng741　　　　#私钥
-lisheng741.pub 　#公钥
+test123　　　　#私钥
+test123.pub 　#公钥
 ```
 
 一般会把密钥对放在 `C:\Users\个人用户名\.ssh`
@@ -102,7 +102,7 @@ Gitee：点自己头像 >> 设置 >> SS公钥
 ssh -T git@github.com
 
 # 提示如下则成功
-# Hi lisheng741! You've successfully authenticated, but GitHub does not provide shell access.
+# Hi [YourGithubUsername]! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
 

@@ -1,3 +1,5 @@
+// 来源：https://github.com/PanJiaChen/awesome-bookmarks
+
 const path = require('path')
 const fs = require('fs')
 
