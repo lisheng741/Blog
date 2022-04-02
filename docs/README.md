@@ -1,9 +1,6 @@
 ---
 home: true
-heroImage: null
-heroText: 芦荟柚子茶的博客
-tagline: null
-actionText: null
+heroText: 首页
 actionLink: /record/
 footer: MIT Licensed | Copyright © 2022-lisheng741
 ---
