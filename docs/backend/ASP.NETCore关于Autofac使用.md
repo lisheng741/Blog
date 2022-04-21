@@ -1,4 +1,4 @@
-# .NET-Autofac
+# ASP.NET Core 6.0 关于 Autofac 使用
 
 [[toc]]
 
