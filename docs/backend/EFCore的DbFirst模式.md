@@ -6,9 +6,11 @@
 
 ## 1 前言
 
-EF6 时代，可以通过界面操作，添加数据库实体。
+EF Core 可以以数据库架构为准，通过[反向工程](https://docs.microsoft.com/zh-cn/ef/core/managing-schemas/scaffolding)生成EF Core 模型（称为 Db First 模式）。
 
-EF Core 需要通过 CLI 来进行该操作，具体请参考[EF Core官方文档：反向工程](https://docs.microsoft.com/zh-cn/ef/core/managing-schemas/scaffolding?tabs=dotnet-core-cli)。
+在 EF6 时代，我们可以通过界面简单的操作，完成该功能。
+
+EF Core 则需要通过 CLI 来进行该操作，具体请参考[EF Core官方文档：反向工程](https://docs.microsoft.com/zh-cn/ef/core/managing-schemas/scaffolding?tabs=dotnet-core-cli)。
 
 当然，EF Core 也有界面化操作的工具，EF Core Power Tools，具体请见最后介绍。
 

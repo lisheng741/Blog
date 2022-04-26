@@ -8,7 +8,7 @@
 
 本文第一节从基本的概念说起；
 
-第二节以文字的方式，列出 Autofac 的使用步骤；
+第二节，以文字的方式，列出 Autofac 的使用步骤；
 
 第三节，结合实际的代码，展示如何对 Autofac 进行配置；
 
@@ -42,7 +42,7 @@ DI 是 IoC 的一种实现方式，为依赖注入的方式。具体做法就是
 
 ## 2 使用步骤
 
-### 2.1 基本使用
+### 2.1 基本使用（.NET程序）
 
 1. 引入 Autofac
 2. 在程序入口处：创建容器（Create a ContainerBuilder），注册服务/组件（Register Components），构建并存储容器（Build and store）
@@ -50,7 +50,7 @@ DI 是 IoC 的一种实现方式，为依赖注入的方式。具体做法就是
 
 对应[3.2基本使用](#i-common-use)
 
-### 2.2 在ASP.NET Core 中使用（.NET6）
+### 2.2 在ASP.NET Core 6.0 中使用
 
 替换工厂方式：
 
@@ -70,13 +70,19 @@ DI 是 IoC 的一种实现方式，为依赖注入的方式。具体做法就是
 
 方式一：界面 NuGet 包添加
 
-方式二：控制台引入 NuGet 包
+方式二：程序包控制台引入 NuGet 包
 
 ```shell
 Install-Package Autofac -Version 6.3.0
 ```
 
-方式三：修改工程文件
+方式三：控制台引入
+
+```bash
+dotnet add package Autofac -v 6.3.0
+```
+
+方式四：修改工程文件
 
 ```xml
 <PackageReference Include="Autofac" Version="6.3.0" />
@@ -125,7 +131,7 @@ public class AutofacModule : Module
 
 注：
 
-工厂模式下，Autofac 在自己注册服务之前，会先把 ServiceCollection 中注册的服务全部接管过来，所以通过 .NET6 默认的 DI 容器方式注入的服务，也生效。
+工厂模式下，Autofac 在自己注册服务之前，会先把 ServiceCollection 中注册的服务全部接管过来，所以通过默认的 DI 容器方式注入的服务，也将生效。
 
 ### 3.4 其他配置方式
 
