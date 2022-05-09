@@ -133,6 +133,35 @@ redis-server.exe redis.windows.conf
 
 **解决2**：在安装目录下，直接双击运行：redis-server.exe
 
+### 3 没有目录读写权限报错
+
+主要报错信息：Permission denied
+
+完整报错信息：
+
+```bash
+[21816] 28 Apr 09:08:19.093 # rdbSave failed in qfork: Permission denied
+[31096] 28 Apr 09:08:19.146 # fork operation complete
+[31096] 28 Apr 09:08:19.154 # Background saving error
+[31096] 28 Apr 09:08:25.064 * 1 changes in 900 seconds. Saving...
+[31096] 28 Apr 09:08:25.071 * Background saving started by pid 27060
+[27060] 28 Apr 09:08:25.134 # Failed opening the RDB file dump.rdb (in server root dir C:\Program Files\Redis) for saving: 数据无效。
+```
+
+该报错的大概意思是：RDB 保存的时候，报了没有权限的错（Permission denied），文件所在的目录是 C:\Program Files\Redis
+
+**解决**：给该目录分配当前用户的读写权限。
+
+![image-20220428091906114](../images/image-20220428091906114.png)
+
+
+
+## 安装为 Windows 服务
+
+```bash
+redis-server.exe --service-install redis.windows.conf
+```
+
 
 
 ## 参考来源
@@ -142,4 +171,6 @@ redis-server.exe redis.windows.conf
 [浪丶荡 的 下载并安装windows版本的Redis](https://blog.csdn.net/leisure_life/article/details/82078233)
 
 [凉凉的西瓜 的 redis如何设置密码](https://blog.csdn.net/qq_42815754/article/details/83827375)
+
+[windows下安装Redis并部署成服务](https://www.cnblogs.com/weiqinl/p/6490372.html)
 
