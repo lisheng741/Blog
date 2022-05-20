@@ -1,5 +1,7 @@
 # EF Core 的关联查询
 
+[[toc]]
+
 
 
 ## 0 前言
@@ -195,7 +197,7 @@ var blogs = db.Blogs.Include(b => b.Posts) // 关联 Post
 
 包含多个层级，使用 ThenInclude
 
-```
+```csharp
 var blogs = db.Blogs.Include(blog => blog.Posts)
     .ThenInclude(post => post.Author)
     .ToList(); 

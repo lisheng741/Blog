@@ -21,3 +21,4 @@
 ## 其他
 
 - [windows 安装 Redis5.0](./windows安装Redis5.0.md)
+- [基于 BaGet 搭建 Nuget 服务器](./基于BaGet搭建Nuget服务器.md)
