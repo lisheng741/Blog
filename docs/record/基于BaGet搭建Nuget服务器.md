@@ -60,7 +60,7 @@ docker pull loicsharma/baget
 docker run --rm --name nuget-server -p 5555:80 --env-file baget.env -v "$(pwd)/baget-data:/var/baget" loicsharma/baget:latest
 ```
 
--p 5555:80 是把 docker 内的 80 端口映射到服务器的 5555 端口。
+-p 5555:80 是把 docker 容器内的 80 端口映射到服务器的 5555 端口。
 
 启动如果没有报错，则访问 http://服务器ip:5555，如 http://192.168.10.20:5555 即可成功访问
 
