@@ -126,7 +126,9 @@ dotnet nuget push -s http://localhost:5555/v3/index.json -k NUGET-SERVER-API-KEY
 
 
 
-## 4 使用自建服务器的 Nuget 包
+## 4 使用方式1：修改 VS 配置
+
+使用自建服务器的 Nuget 包
 
 ### 4.1 修改 VS 配置
 
@@ -142,9 +144,46 @@ dotnet nuget push -s http://localhost:5555/v3/index.json -k NUGET-SERVER-API-KEY
 
 ![image-20220520160816243](../images/image-20220520160816243.png)
 
-### 4.3 命令行引入 Nuget 包
 
-待补充……
+
+## 5 使用方式2：修改项目配置
+
+### 增加 nuget.config 配置文件
+
+在解决方案根目录，或者项目目录下，增加 nuget.config 配置文件。
+
+注意：如果在解决方案根目录下增加，则该文件的配置，会覆盖默认的 VS 设置。
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+
+	<!-- Define the package sources, nuget.org and contoso.com. -->
+	<!-- `clear` ensures no additional sources are inherited from another config file. -->
+	<packageSources>
+		<clear />
+		<!-- `key` can be any identifier for your source. -->
+		<add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
+		<add key="mynuget" value="http://175.178.244.200:6020/v3/index.json" />
+	</packageSources>
+
+	<!-- Define mappings by adding package patterns beneath the target source. -->
+	<!-- Contoso.* packages and NuGet.Common will be restored from contoso.com, everything else from nuget.org. -->
+	<packageSourceMapping>
+		<!-- key value for <packageSource> should match key values from <packageSources> element -->
+		<packageSource key="nuget.org">
+			<package pattern="*" />
+		</packageSource>
+		<packageSource key="mynuget">
+			<package pattern="MessageLib" />
+            <package pattern="MessageLib.*" />
+		</packageSource>
+	</packageSourceMapping>
+
+</configuration>
+```
+
+如上配置文件所示，MessageLib 这个 NuGet 包会通过 mynuget 这个源来还原，其他的使用默认的 nuget.org 还原。
 
 
 
