@@ -9,6 +9,7 @@
 - [ASP.NET Core 6.0 开启CORS](./ASP.NETCore开启CORS.md)
 - [ASP.NETCore 6.0 定时任务 Quartz](./ASP.NETCore定时任务Quartz.md)
 - [ASP.NETCore 6.0 使用 AutoMapper](./ASP.NETCore使用AutoMapper.md)
+- [ASP.NETCore 6.0 基于模型验证的数据验证](./ASP.NETCore模型验证.md)
 
 
 

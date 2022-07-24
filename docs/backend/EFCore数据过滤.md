@@ -280,7 +280,7 @@ WHERE [t].[IsDeleted] = CAST(0 AS bit)
 
 准备一个多租户的 interface，命名为 ITenant，所有需要多租户控制的，都实现该接口。
 
-并准备一个 TestTenant 同时继承 ITenant 和 ISoftDelete。
+并准备一个 TestTenant 同时实现 ITenant 和 ISoftDelete。
 
 为简单处理，将 TenantId 默认值设置为 1
 
