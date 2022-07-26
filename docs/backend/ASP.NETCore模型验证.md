@@ -6,7 +6,7 @@
 
 在程序中，需要进行数据验证的场景经常存在，且数据验证是有必要的。前端进行数据验证，主要是为了减少服务器请求压力，和提高用户体验；后端进行数据验证，主要是为了保证数据的正确性，保证系统的健壮性。
 
-本文描述的数据验证方案，是基于官方的[模型验证（Model validation）](https://docs.microsoft.com/zh-cn/aspnet/core/mvc/models/validation)，也是笔者近期面试过程中才得知的方式【之前个人混淆了：模型验证（Model validation）和 EF 模型配置的数据注释（Data annotation）方式】。
+本文描述的数据验证方案，是基于官方的[模型验证（Model validation）](https://docs.microsoft.com/zh-cn/aspnet/core/mvc/models/validation)，自定义其返回格式的方案。是笔者近期面试过程中才得知的方式【之前个人混淆了：模型验证（Model validation）和 EF 模型配置的数据注释（Data annotation）方式】。
 
 注：MVC 和 API 的模型验证有些许差异，本文主要描述的是 API 下的模型验证。
 
@@ -149,11 +149,11 @@ public class TestController : ControllerBase
 
 
 
-## 3 自定义数据验证
+## 3 自定义数据验证返回结果
 
 ### 3.1 介绍
 
-由于官方模型验证返回的格式与我们程序实际需要的格式有差异，所以这一部分主要是替换模型验证的**返回格式**，使用的实际上还是模型验证的能力。
+由于官方模型验证返回的格式与我们程序实际需要的格式有差异，所以这一部分主要是替换模型验证的**返回结果**，使用的实际上还是模型验证的能力。
 
 ### 3.2 前置准备
 
@@ -318,9 +318,17 @@ builder.Services.Configure<MvcOptions>(options =>
 
 ### 4.1 基本介绍
 
-AspNetCore 模型验证这一块相关的源码，主要是通过注册一个默认工厂 `InvalidModelStateResponseFactory`（由 `ApiBehaviorOptionsSetup` 对 `ApiBehaviorOptions` 进行配置，实际上是一个 `Func`），以及使用一个过滤器（为 `ModelStateInvalidFilter`，由 `ModelStateInvalidFilterFactory` 生成），来控制模型验证以及返回结果（返回一个 `BadRequestObjectResult` 或 `ObjectResult`）。
+AspNetCore 模型验证这一块相关的源码，主要是使用一个默认过滤器（为 `ModelStateInvalidFilter`，由 `ModelStateInvalidFilterFactory` 生成），在经过默认过滤器，判定是否模型验证不通过，若验证不通过，将会调用一个默认工厂 `InvalidModelStateResponseFactory`（由 `ApiBehaviorOptionsSetup` 对 `ApiBehaviorOptions` 进行配置，实际上是一个 `Func`），来产生模型验证的返回结果（返回一个 `BadRequestObjectResult` 或 `ObjectResult`）。
 
-其中，最主要的是 `ApiBehaviorOptions` 的 `SuppressModelStateInvalidFilter` 和  `InvalidModelStateResponseFactory` 属性。这两个属性，前者控制默认过滤器是否启用，后者生成模型验证的结果。
+简单描述一下数据流向：
+
+用户请求 >> `ModelStateInvalidFilter` >> `InvalidModelStateResponseFactory` >> `BadRequestObjectResult`
+
+其中，最主要的控制是 `ApiBehaviorOptions` 的 `SuppressModelStateInvalidFilter` 和  `InvalidModelStateResponseFactory` 属性。这两个属性，前者控制默认过滤器是否启用，后者被默认过滤器调用生成模型验证的结果。
+
+所以，本文第3部门提及的两种自定义返回结果的方案，要么是自定义一个新的过滤器并禁用默认的过滤器，要么是替换生成模型验证结果的工厂。
+
+下面将相关的源码贴出。
 
 ### 4.2 MvcServiceCollectionExtensions
 
