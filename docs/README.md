@@ -23,6 +23,8 @@ footer: MIT Licensed | Copyright © 2022-lisheng741
 
 - [记录](/record/)
 
+- [项目](/projects/)
+
 - [前端](/fronted/)
 
 - [后端](/backend/)

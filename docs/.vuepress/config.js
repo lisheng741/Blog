@@ -12,6 +12,7 @@ module.exports = {
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
+      { text: '项目', link: '/projects/' },
       { text: '记录', link: '/record/' },
       { text: '前端', link: '/fronted/' },
       { text: '后端', link: '/backend/' },
