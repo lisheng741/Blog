@@ -186,6 +186,40 @@ public class TestJob : IJob
 
 ### 4.3 添加 QuartzService
 
+准备必要的 Model
+
+```csharp
+public class JobInfo
+{
+    public string Name { get; private set; }
+    public ICollection<TriggerInfo> Triggers { get; set; }
+
+    public JobInfo(string name)
+    {
+        Name = name;
+        Triggers = new List<TriggerInfo>();
+    }
+
+    public JobInfo(string name, TriggerInfo triggerInfo)
+        : this(name)
+        {
+            Triggers.Add(triggerInfo);
+        }
+}
+
+public class TriggerInfo
+{
+    public string Name { get; private set; }
+    public string Cron { get; private set; }
+
+    public TriggerInfo(string name, string cron)
+    {
+        Name = name;
+        Cron = cron;
+    }
+}
+```
+
 准备一个 QuartzService，提供基本的服务。
 
 ```csharp
@@ -205,21 +239,18 @@ public class QuartzService
     public async Task Start()
     {
         var scheduler = await _schedulerFactory.GetScheduler();
-        if (scheduler == null) throw new ArgumentNullException(nameof(scheduler));
         await scheduler.Start();
     }
 
     public async Task Shutdown()
     {
         var scheduler = await _schedulerFactory.GetScheduler();
-        if (scheduler == null) throw new ArgumentNullException(nameof(scheduler));
         await scheduler.Shutdown();
     }
 
     public async Task AddJob(string jobName, string cron)
     {
         var scheduler = await _schedulerFactory.GetScheduler();
-        if (scheduler == null) throw new ArgumentNullException(nameof(scheduler));
 
         var jobKey = new JobKey(jobName);
         var job = JobBuilder.Create<TestJob>()
@@ -249,7 +280,6 @@ public class QuartzService
     {
         var scheduler = await _schedulerFactory.GetScheduler();
 
-        if (scheduler == null) throw new ArgumentNullException(nameof(scheduler));
         var jobKey = new JobKey(jobName);
 
         await scheduler.PauseJob(jobKey);
@@ -260,7 +290,6 @@ public class QuartzService
     {
         var scheduler = await _schedulerFactory.GetScheduler();
 
-        if (scheduler == null) throw new ArgumentNullException(nameof(scheduler));
         var jobKey = new JobKey(jobName);
         
         await scheduler.ResumeJob(jobKey);
