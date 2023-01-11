@@ -98,8 +98,8 @@ nvm 默认用的是 node.js 官网的下载，比较慢，可以切换成国内�
 在 nvm 的安装路径下，找到 settings.txt，打开文件，在后面添加两行。
 
 ```shell
-node_mirror: https://npm.taobao.org/mirrors/node/
-npm_mirror: https://npm.taobao.org/mirrors/npm/
+node_mirror: https://npmmirror.com/mirrors/node/
+npm_mirror: https://npmmirror.com/mirrors/npm/
 ```
 
 
@@ -118,7 +118,7 @@ npm_mirror: https://npm.taobao.org/mirrors/npm/
 
 ```shell
 npm get registry  #查看当前镜像地址
-npm config set registry http://registry.npm.taobao.org/  #切换成淘宝的镜像
+npm config set registry http://registry.npmmirror.com/  #切换成淘宝的镜像
 ```
 
 切换回原 npm 镜像
@@ -130,7 +130,7 @@ npm config set registry https://registry.npmjs.org/  #切回原来的镜像
 ### 安装 cnpm
 
 ```shell
-npm install -g cnpm --registry=https://registry.npm.taobao.org  #安装 淘宝镜像源 cnpm
+npm install -g cnpm --registry=https://registry.npmmirror.com  #安装 淘宝镜像源 cnpm
 ```
 
 ### 安装 nrm
