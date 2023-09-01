@@ -111,6 +111,38 @@ ssh -T git@github.com
 
 ## 常见问题
 
+### Error connecting to agent: No such file or directory
+
+**报错信息**
+
+使用 `ssh-add <私钥路径>` 时，报错
+
+```bash
+Error connecting to agent: No such file or directory
+```
+
+**解决方案**
+
+参考：[Windows下使用ssh-add报错 Error connecting to agent: No such file or directory](https://www.cnblogs.com/attackingmilo/p/Windows-ssh-add-error.html)
+
+打开 Windows PowerShell 检查 ssh-agent 服务是否启动成功
+
+```bash
+get-service ssh*
+```
+
+状态是 Stopped 状态，则启动服务
+
+```bash
+Set-Service -Name ssh-agent -StartupType Manual
+Start-Service ssh-agent
+```
+
+如果启动成功，则可以继续添加秘钥
+
+
+
+
 ### TortoiseGit 提交报错
 
 **报错信息**
