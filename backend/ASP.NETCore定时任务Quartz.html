@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ASP.NET Core 6.0 定时任务 Quartz | 芦荟柚子茶的博客</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="cl_lis blog">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0b1ac558.css" as="style"><link rel="preload" href="/blog/assets/js/app.558beeb7.js" as="script"><link rel="preload" href="/blog/assets/js/2.c9b070a5.js" as="script"><link rel="preload" href="/blog/assets/js/20.3ee32d4a.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.ab0a2d87.js"><link rel="prefetch" href="/blog/assets/js/11.0cc953f3.js"><link rel="prefetch" href="/blog/assets/js/12.366feb7b.js"><link rel="prefetch" href="/blog/assets/js/13.c133c64c.js"><link rel="prefetch" href="/blog/assets/js/14.80cd9f46.js"><link rel="prefetch" href="/blog/assets/js/15.db67f680.js"><link rel="prefetch" href="/blog/assets/js/16.a3cc2600.js"><link rel="prefetch" href="/blog/assets/js/17.30a20293.js"><link rel="prefetch" href="/blog/assets/js/18.abaa7e33.js"><link rel="prefetch" href="/blog/assets/js/19.c5dd4582.js"><link rel="prefetch" href="/blog/assets/js/21.d7df4dff.js"><link rel="prefetch" href="/blog/assets/js/22.3cfc9a6c.js"><link rel="prefetch" href="/blog/assets/js/23.1e210814.js"><link rel="prefetch" href="/blog/assets/js/24.7f724dd0.js"><link rel="prefetch" href="/blog/assets/js/25.69362e2a.js"><link rel="prefetch" href="/blog/assets/js/26.7efec979.js"><link rel="prefetch" href="/blog/assets/js/27.baab02b4.js"><link rel="prefetch" href="/blog/assets/js/28.22708483.js"><link rel="prefetch" href="/blog/assets/js/29.8131a205.js"><link rel="prefetch" href="/blog/assets/js/3.91f35203.js"><link rel="prefetch" href="/blog/assets/js/30.1dcc6d5c.js"><link rel="prefetch" href="/blog/assets/js/31.cd647998.js"><link rel="prefetch" href="/blog/assets/js/32.f22a6677.js"><link rel="prefetch" href="/blog/assets/js/33.031d81c8.js"><link rel="prefetch" href="/blog/assets/js/34.dc2b0687.js"><link rel="prefetch" href="/blog/assets/js/35.55225650.js"><link rel="prefetch" href="/blog/assets/js/36.01a82d7c.js"><link rel="prefetch" href="/blog/assets/js/37.9e6b4b86.js"><link rel="prefetch" href="/blog/assets/js/38.947002a2.js"><link rel="prefetch" href="/blog/assets/js/39.d252a4d8.js"><link rel="prefetch" href="/blog/assets/js/4.d2bc884a.js"><link rel="prefetch" href="/blog/assets/js/5.8deafdd4.js"><link rel="prefetch" href="/blog/assets/js/6.b88d790a.js"><link rel="prefetch" href="/blog/assets/js/7.5a873c47.js"><link rel="prefetch" href="/blog/assets/js/8.b3ddc9f5.js"><link rel="prefetch" href="/blog/assets/js/9.45271a8d.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0b1ac558.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><!----> <span class="site-name">芦荟柚子茶的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/blog/projects/" class="nav-link">
+  项目
+</a></div><div class="nav-item"><a href="/blog/record/" class="nav-link">
+  记录
+</a></div><div class="nav-item"><a href="/blog/fronted/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/blog/backend/" class="nav-link router-link-active">
+  后端
+</a></div><div class="nav-item"><a href="/blog/thanks/" class="nav-link">
+  感谢
+</a></div> <a href="https://github.com/lisheng741/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/blog/projects/" class="nav-link">
+  项目
+</a></div><div class="nav-item"><a href="/blog/record/" class="nav-link">
+  记录
+</a></div><div class="nav-item"><a href="/blog/fronted/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/blog/backend/" class="nav-link router-link-active">
+  后端
+</a></div><div class="nav-item"><a href="/blog/thanks/" class="nav-link">
+  感谢
+</a></div> <a href="https://github.com/lisheng741/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>后端</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/backend/" aria-current="page" class="sidebar-link">目录</a></li><li><a href="/blog/backend/EFCore配置模型.html" class="sidebar-link">EF Core 配置模型</a></li><li><a href="/blog/backend/EFCore的DbFirst模式.html" class="sidebar-link">EFCore 的 DbFirst 模式</a></li><li><a href="/blog/backend/EFCore的CodeFirst模式.html" class="sidebar-link">EF Core 的 Code First 模式</a></li><li><a href="/blog/backend/EFCore概述.html" class="sidebar-link">EF Core 概述</a></li><li><a href="/blog/backend/EFCore数据过滤.html" class="sidebar-link">EF Core 数据过滤</a></li><li><a href="/blog/backend/EFCore关联查询.html" class="sidebar-link">EF Core 的关联查询</a></li><li><a href="/blog/backend/ASP.NETCore添加JWT.html" class="sidebar-link">ASP.NET Core 6.0 添加 JWT 认证和授权</a></li><li><a href="/blog/backend/ASP.NETCore模型验证.html" class="sidebar-link">ASP.NET Core 6.0 基于模型验证的数据验证</a></li><li><a href="/blog/backend/ASP.NETCore开启CORS.html" class="sidebar-link">ASP.NET Core 6.0 开启 CORS 跨域请求</a></li><li><a href="/blog/backend/ASP.NETCore定时任务Quartz.html" class="active sidebar-link">ASP.NET Core 6.0 定时任务 Quartz</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog/backend/ASP.NETCore定时任务Quartz.html#_1-基本说明" class="sidebar-link">1 基本说明</a></li><li class="sidebar-sub-header"><a href="/blog/backend/ASP.NETCore定时任务Quartz.html#_2-使用方式一-net-控制台" class="sidebar-link">2 使用方式一：.NET 控制台</a></li><li class="sidebar-sub-header"><a href="/blog/backend/ASP.NETCore定时任务Quartz.html#_3-使用方式二-net-core-hostedservice-使用" class="sidebar-link">3 使用方式二：.NET Core HostedService 使用</a></li><li class="sidebar-sub-header"><a href="/blog/backend/ASP.NETCore定时任务Quartz.html#_4-使用方式三-dependencyinjection-方式使用" class="sidebar-link">4 使用方式三：DependencyInjection 方式使用</a></li><li class="sidebar-sub-header"><a href="/blog/backend/ASP.NETCore定时任务Quartz.html#参考来源" class="sidebar-link">参考来源</a></li></ul></li><li><a href="/blog/backend/ASP.NETCore关于CSRedis.html" class="sidebar-link">ASP.NET Core 关于 CSRedis</a></li><li><a href="/blog/backend/ASP.NETCore关于Cache.html" class="sidebar-link">ASP.NET Core 6.0 关于 Cache</a></li><li><a href="/blog/backend/ASP.NETCore关于Autofac使用.html" class="sidebar-link">ASP.NET Core 6.0 关于 Autofac 使用</a></li><li><a href="/blog/backend/ASP.NETCore使用AutoMapper.html" class="sidebar-link">ASP.NET Core 6.0 使用 AutoMapper</a></li><li><a href="/blog/backend/ASP.NETCore产生连续Guid.html" class="sidebar-link">ASP.NET Core 产生连续 Guid</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="asp-net-core-6-0-定时任务-quartz"><a href="#asp-net-core-6-0-定时任务-quartz" class="header-anchor">#</a> ASP.NET Core 6.0 定时任务 Quartz</h1> <h2 id="_1-基本说明"><a href="#_1-基本说明" class="header-anchor">#</a> 1 基本说明</h2> <p>本文只是笔记记录 Quartz 的使用流程，并不会添加说明。</p> <h3 id="_1-1-相关-nuget-包"><a href="#_1-1-相关-nuget-包" class="header-anchor">#</a> 1.1 相关 Nuget 包</h3> <div class="language-bash extra-class"><pre class="language-bash"><code>Quartz --<span class="token operator">&gt;&gt;</span> 核心包
+Quartz.Extensions.DependencyInjection --<span class="token operator">&gt;&gt;</span> 依赖于 Quartz 包，提供依赖注入能力
+Quartz.Extensions.Hosting --<span class="token operator">&gt;&gt;</span> 依赖于 Quartz.Extensions.DependencyInjection 包，提供 HostedService
+</code></pre></div><h3 id="_1-2-重要概念"><a href="#_1-2-重要概念" class="header-anchor">#</a> 1.2 重要概念</h3> <p>Scheduler：定时任务列表</p> <p>Job：定时任务</p> <p>Trigger：触发器</p> <p>其他：Listener、Store</p> <h2 id="_2-使用方式一-net-控制台"><a href="#_2-使用方式一-net-控制台" class="header-anchor">#</a> 2 使用方式一：.NET 控制台</h2> <p>控制台程序中使用定时任务步骤</p> <h3 id="_2-1-添加-nuget-包"><a href="#_2-1-添加-nuget-包" class="header-anchor">#</a> 2.1 添加 Nuget 包</h3> <div class="language-bash extra-class"><pre class="language-bash"><code>dotnet <span class="token function">add</span> package Quartz
+</code></pre></div><h3 id="_2-2-添加-job-程序"><a href="#_2-2-添加-job-程序" class="header-anchor">#</a> 2.2 添加 Job 程序</h3> <div class="language-csharp extra-class"><pre class="language-csharp"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestJob</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">IJob</span></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">Task</span> <span class="token function">Execute</span><span class="token punctuation">(</span><span class="token class-name">IJobExecutionContext</span> context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">&quot;Job 执行：&quot;</span> <span class="token operator">+</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> Task<span class="token punctuation">.</span>CompletedTask<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="_2-3-设置并运行"><a href="#_2-3-设置并运行" class="header-anchor">#</a> 2.3 设置并运行</h3> <p>在 Program.cs 中贴入一下代码：</p> <p>创建一个 Scheduler ，实例化一个 Job 和一个 Trigger，并添加到 Scheduler 中，定时任务会开始执行。</p> <p>程序在执行 60 秒以后，会停止 Scheduler。</p> <div class="language-csharp extra-class"><pre class="language-csharp"><code><span class="token keyword">using</span> <span class="token namespace">Quartz</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Quartz<span class="token punctuation">.</span>Impl</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Grab the Scheduler instance from the Factory</span>
+<span class="token class-name">StdSchedulerFactory</span> factory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">StdSchedulerFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">IScheduler</span> scheduler <span class="token operator">=</span> <span class="token keyword">await</span> factory<span class="token punctuation">.</span><span class="token function">GetScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// and start it off</span>
+<span class="token keyword">await</span> scheduler<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">IJobDetail</span> job <span class="token operator">=</span> JobBuilder<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">Create</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>TestJob<span class="token punctuation">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">WithIdentity</span><span class="token punctuation">(</span><span class="token string">&quot;job1&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;group1&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">Build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">ITrigger</span> trigger <span class="token operator">=</span> TriggerBuilder<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">WithIdentity</span><span class="token punctuation">(</span><span class="token string">&quot;trigger1&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;group1&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">StartNow</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">WithSimpleSchedule</span><span class="token punctuation">(</span>x <span class="token operator">=&gt;</span> x
+                    <span class="token punctuation">.</span><span class="token function">WithIntervalInSeconds</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">RepeatForever</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">Build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">await</span> scheduler<span class="token punctuation">.</span><span class="token function">ScheduleJob</span><span class="token punctuation">(</span>job<span class="token punctuation">,</span> trigger<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// some sleep to show what's happening</span>
+<span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">Delay</span><span class="token punctuation">(</span>TimeSpan<span class="token punctuation">.</span><span class="token function">FromSeconds</span><span class="token punctuation">(</span><span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// and last shut down the scheduler when you are ready to close your program</span>
+<span class="token keyword">await</span> scheduler<span class="token punctuation">.</span><span class="token function">Shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="_3-使用方式二-net-core-hostedservice-使用"><a href="#_3-使用方式二-net-core-hostedservice-使用" class="header-anchor">#</a> 3 使用方式二：.NET Core HostedService 使用</h2> <h3 id="_3-1-引入-nuget-包"><a href="#_3-1-引入-nuget-包" class="header-anchor">#</a> 3.1 引入 NuGet 包</h3> <div class="language-bash extra-class"><pre class="language-bash"><code>dotnet <span class="token function">add</span> package Quartz.Extensions.Hosting
+</code></pre></div><h3 id="_3-2-添加-job-程序"><a href="#_3-2-添加-job-程序" class="header-anchor">#</a> 3.2 添加 Job 程序</h3> <div class="language-csharp extra-class"><pre class="language-csharp"><code><span class="token keyword">using</span> <span class="token namespace">Quartz</span><span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> <span class="token namespace">QuartzTest<span class="token punctuation">.</span>Jobs</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">DisallowConcurrentExecution</span></span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestJob</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">IJob</span></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">Task</span> <span class="token function">Execute</span><span class="token punctuation">(</span><span class="token class-name">IJobExecutionContext</span> context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">&quot;测试 Job --- &quot;</span> <span class="token operator">+</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> Task<span class="token punctuation">.</span>CompletedTask<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="_3-3-设置并运行"><a href="#_3-3-设置并运行" class="header-anchor">#</a> 3.3 设置并运行</h3> <p>Program.cs 中，注册两个服务：</p> <p>AddQuartz：添加 Quartz 能力，并配置注入工厂 <code>config.UseMicrosoftDependencyInjectionJobFactory()</code>；</p> <p>AddQuartzHostedService：注册 HostedService 服务，使得定时任务随程序启动而启动。</p> <div class="language-csharp extra-class"><pre class="language-csharp"><code>builder<span class="token punctuation">.</span>Services<span class="token punctuation">.</span><span class="token function">AddQuartz</span><span class="token punctuation">(</span>config <span class="token operator">=&gt;</span>
+<span class="token punctuation">{</span>
+    config<span class="token punctuation">.</span><span class="token function">UseMicrosoftDependencyInjectionJobFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    config<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">AddJob</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>TestJob<span class="token punctuation">&gt;</span></span></span><span class="token punctuation">(</span>options <span class="token operator">=&gt;</span> options<span class="token punctuation">.</span><span class="token function">WithIdentity</span><span class="token punctuation">(</span><span class="token string">&quot;Test&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    config<span class="token punctuation">.</span><span class="token function">AddTrigger</span><span class="token punctuation">(</span>options <span class="token operator">=&gt;</span>
+        options<span class="token punctuation">.</span><span class="token function">ForJob</span><span class="token punctuation">(</span><span class="token string">&quot;Test&quot;</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">WithIdentity</span><span class="token punctuation">(</span><span class="token string">&quot;Test-Trigger&quot;</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">WithCronSchedule</span><span class="token punctuation">(</span><span class="token string">&quot;0/5 * * * * ?&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Quartz.Extensions.Hosting allows you to fire background service that handles scheduler lifecycle</span>
+builder<span class="token punctuation">.</span>Services<span class="token punctuation">.</span><span class="token function">AddQuartzHostedService</span><span class="token punctuation">(</span>options <span class="token operator">=&gt;</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// when shutting down we want jobs to complete gracefully</span>
+    options<span class="token punctuation">.</span>WaitForJobsToComplete <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="_4-使用方式三-dependencyinjection-方式使用"><a href="#_4-使用方式三-dependencyinjection-方式使用" class="header-anchor">#</a> 4 使用方式三：DependencyInjection 方式使用</h2> <h3 id="_4-1-引入-nuget-包"><a href="#_4-1-引入-nuget-包" class="header-anchor">#</a> 4.1 引入 NuGet 包</h3> <div class="language-bash extra-class"><pre class="language-bash"><code>dotnet <span class="token function">add</span> package Quartz.Extensions.DependencyInjection
+</code></pre></div><h3 id="_4-2-添加-job-程序"><a href="#_4-2-添加-job-程序" class="header-anchor">#</a> 4.2 添加 Job 程序</h3> <div class="language-csharp extra-class"><pre class="language-csharp"><code><span class="token keyword">using</span> <span class="token namespace">Quartz</span><span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> <span class="token namespace">QuartzFactoryTest</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestJob</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">IJob</span></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name">ILogger<span class="token punctuation">&lt;</span>TestJob<span class="token punctuation">&gt;</span></span> _logger<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">TestJob</span><span class="token punctuation">(</span><span class="token class-name">ILogger<span class="token punctuation">&lt;</span>TestJob<span class="token punctuation">&gt;</span></span> logger<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        _logger <span class="token operator">=</span> logger<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">Task</span> <span class="token function">Execute</span><span class="token punctuation">(</span><span class="token class-name">IJobExecutionContext</span> context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> map <span class="token operator">=</span> context<span class="token punctuation">.</span>JobDetail<span class="token punctuation">.</span>JobDataMap<span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> jobName <span class="token operator">=</span> map<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">&quot;name&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        _logger<span class="token punctuation">.</span><span class="token function">LogInformation</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$&quot;</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">jobName</span><span class="token punctuation">}</span></span><span class="token string"> in </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">Thread<span class="token punctuation">.</span>CurrentThread<span class="token punctuation">.</span>ManagedThreadId</span><span class="token punctuation">}</span></span><span class="token string"> run at </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">DateTime<span class="token punctuation">.</span>Now</span><span class="token punctuation">}</span></span><span class="token string">&quot;</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> Task<span class="token punctuation">.</span>CompletedTask<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="_4-3-添加-quartzservice"><a href="#_4-3-添加-quartzservice" class="header-anchor">#</a> 4.3 添加 QuartzService</h3> <p>准备必要的 Model</p> <div class="language-csharp extra-class"><pre class="language-csharp"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">JobInfo</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">private</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">ICollection<span class="token punctuation">&lt;</span>TriggerInfo<span class="token punctuation">&gt;</span></span> Triggers <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">JobInfo</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> name<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+        Triggers <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">List<span class="token punctuation">&lt;</span>TriggerInfo<span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">JobInfo</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> name<span class="token punctuation">,</span> <span class="token class-name">TriggerInfo</span> triggerInfo<span class="token punctuation">)</span>
+        <span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Triggers<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>triggerInfo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TriggerInfo</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">private</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> Cron <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">private</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">TriggerInfo</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> name<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">string</span></span> cron<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+        Cron <span class="token operator">=</span> cron<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>准备一个 QuartzService，提供基本的服务。</p> <div class="language-csharp extra-class"><pre class="language-csharp"><code><span class="token keyword">using</span> <span class="token namespace">Quartz</span><span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> <span class="token namespace">QuartzFactoryTest</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">QuartzService</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name">ISchedulerFactory</span> _schedulerFactory<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">QuartzService</span><span class="token punctuation">(</span><span class="token class-name">ISchedulerFactory</span> schedulerFactory<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        _schedulerFactory <span class="token operator">=</span> schedulerFactory<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> scheduler <span class="token operator">=</span> <span class="token keyword">await</span> _schedulerFactory<span class="token punctuation">.</span><span class="token function">GetScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">await</span> scheduler<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">Shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> scheduler <span class="token operator">=</span> <span class="token keyword">await</span> _schedulerFactory<span class="token punctuation">.</span><span class="token function">GetScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">await</span> scheduler<span class="token punctuation">.</span><span class="token function">Shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">AddJob</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> jobName<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">string</span></span> cron<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> scheduler <span class="token operator">=</span> <span class="token keyword">await</span> _schedulerFactory<span class="token punctuation">.</span><span class="token function">GetScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name"><span class="token keyword">var</span></span> jobKey <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">JobKey</span><span class="token punctuation">(</span>jobName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> job <span class="token operator">=</span> JobBuilder<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">Create</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>TestJob<span class="token punctuation">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">WithIdentity</span><span class="token punctuation">(</span>jobKey<span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">UsingJobData</span><span class="token punctuation">(</span><span class="token string">&quot;name&quot;</span><span class="token punctuation">,</span> jobName<span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">Build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> trigger <span class="token operator">=</span> TriggerBuilder<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">ForJob</span><span class="token punctuation">(</span>jobKey<span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">WithIdentity</span><span class="token punctuation">(</span>jobName<span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">WithCronSchedule</span><span class="token punctuation">(</span>cron<span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">Build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">await</span> scheduler<span class="token punctuation">.</span><span class="token function">ScheduleJob</span><span class="token punctuation">(</span>job<span class="token punctuation">,</span> trigger<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$&quot;Add job </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">jobName</span><span class="token punctuation">}</span></span><span class="token string">&quot;</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">RemoveJob</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> jobName<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> scheduler <span class="token operator">=</span> <span class="token keyword">await</span> _schedulerFactory<span class="token punctuation">.</span><span class="token function">GetScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>scheduler <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token keyword">nameof</span><span class="token punctuation">(</span>scheduler<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name"><span class="token keyword">var</span></span> jobKey <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">JobKey</span><span class="token punctuation">(</span>jobName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">await</span> scheduler<span class="token punctuation">.</span><span class="token function">DeleteJob</span><span class="token punctuation">(</span>jobKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$&quot;Delete job </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">jobName</span><span class="token punctuation">}</span></span><span class="token string">&quot;</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">PauseJob</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> jobName<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> scheduler <span class="token operator">=</span> <span class="token keyword">await</span> _schedulerFactory<span class="token punctuation">.</span><span class="token function">GetScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name"><span class="token keyword">var</span></span> jobKey <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">JobKey</span><span class="token punctuation">(</span>jobName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">await</span> scheduler<span class="token punctuation">.</span><span class="token function">PauseJob</span><span class="token punctuation">(</span>jobKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$&quot;Pause job </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">jobName</span><span class="token punctuation">}</span></span><span class="token string">&quot;</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">ResumeJob</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> jobName<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> scheduler <span class="token operator">=</span> <span class="token keyword">await</span> _schedulerFactory<span class="token punctuation">.</span><span class="token function">GetScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name"><span class="token keyword">var</span></span> jobKey <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">JobKey</span><span class="token punctuation">(</span>jobName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token keyword">await</span> scheduler<span class="token punctuation">.</span><span class="token function">ResumeJob</span><span class="token punctuation">(</span>jobKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$&quot;Resume job </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">jobName</span><span class="token punctuation">}</span></span><span class="token string">&quot;</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="_4-4-注入服务"><a href="#_4-4-注入服务" class="header-anchor">#</a> 4.4 注入服务</h3> <p>在 Program.cs 中注入服务：</p> <div class="language-csharp extra-class"><pre class="language-csharp"><code>builder<span class="token punctuation">.</span>Services<span class="token punctuation">.</span><span class="token function">AddQuartz</span><span class="token punctuation">(</span>config <span class="token operator">=&gt;</span>
+<span class="token punctuation">{</span>
+    config<span class="token punctuation">.</span><span class="token function">UseMicrosoftDependencyInjectionJobFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+builder<span class="token punctuation">.</span>Services<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">AddTransient</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>QuartzService<span class="token punctuation">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="_4-5-测试控制器"><a href="#_4-5-测试控制器" class="header-anchor">#</a> 4.5 测试控制器</h3> <div class="language-csharp extra-class"><pre class="language-csharp"><code><span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>AspNetCore<span class="token punctuation">.</span>Http</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>AspNetCore<span class="token punctuation">.</span>Mvc</span><span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> <span class="token namespace">QuartzFactoryTest<span class="token punctuation">.</span>Controllers</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Route</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token string">&quot;api/[controller]/[action]&quot;</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">ApiController</span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestController</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">ControllerBase</span></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token return-type class-name">QuartzService</span> QuartzService <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token function">TestController</span><span class="token punctuation">(</span><span class="token class-name">QuartzService</span> quartzService<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            QuartzService <span class="token operator">=</span> quartzService<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">HttpGet</span></span><span class="token punctuation">]</span>
+        <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token keyword">await</span> QuartzService<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">HttpGet</span></span><span class="token punctuation">]</span>
+        <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">AddJob</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> jobName<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">string</span></span> cron<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">await</span> QuartzService<span class="token punctuation">.</span><span class="token function">AddJob</span><span class="token punctuation">(</span>jobName<span class="token punctuation">,</span> cron<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">HttpGet</span></span><span class="token punctuation">]</span>
+        <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">RemoveJob</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> jobName<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">await</span> QuartzService<span class="token punctuation">.</span><span class="token function">RemoveJob</span><span class="token punctuation">(</span>jobName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">HttpGet</span></span><span class="token punctuation">]</span>
+        <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">PauseJob</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> jobName<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">await</span> QuartzService<span class="token punctuation">.</span><span class="token function">PauseJob</span><span class="token punctuation">(</span>jobName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">HttpGet</span></span><span class="token punctuation">]</span>
+        <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">ResumeJob</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> jobName<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">await</span> QuartzService<span class="token punctuation">.</span><span class="token function">ResumeJob</span><span class="token punctuation">(</span>jobName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="_4-6-测试"><a href="#_4-6-测试" class="header-anchor">#</a> 4.6 测试</h3> <p>启动 Scheduler</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 调用 /api/Test/Start 控制台提示如下：</span>
+Scheduler QuartzScheduler_<span class="token variable">$_NON_CLUSTERED</span> started.
+</code></pre></div><p>添加定时任务</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 调用 /api/Test/AddJob</span>
+<span class="token comment"># 参数 jobName : test</span>
+<span class="token comment"># 参数 cron : 0/2 * * * * ?</span>
+<span class="token comment"># 添加定时任务，控制台打印日志：</span>
+Add job <span class="token builtin class-name">test</span>
+info: QuartzFactoryTest.TestJob<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+      <span class="token builtin class-name">test</span> <span class="token keyword">in</span> <span class="token number">12</span> run at <span class="token number">2022</span>/6/6 <span class="token number">21</span>:18:52
+</code></pre></div><h2 id="参考来源"><a href="#参考来源" class="header-anchor">#</a> 参考来源</h2> <p><a href="https://www.cnblogs.com/myshowtime/p/14319212.html" target="_blank" rel="noopener noreferrer">在.NET Core 中使用Quartz.NET<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <p><a href="https://www.quartz-scheduler.net/documentation/" target="_blank" rel="noopener noreferrer">Quartz.NET 官方文档<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/lisheng741/blog/edit/master/docs/backend/ASP.NETCore定时任务Quartz.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">上次更新:</span> <span class="time">2022/9/25 01:34:09</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/backend/ASP.NETCore开启CORS.html" class="prev">
+        ASP.NET Core 6.0 开启 CORS 跨域请求
+      </a></span> <span class="next"><a href="/blog/backend/ASP.NETCore关于CSRedis.html">
+        ASP.NET Core 关于 CSRedis
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/blog/assets/js/app.558beeb7.js" defer></script><script src="/blog/assets/js/2.c9b070a5.js" defer></script><script src="/blog/assets/js/20.3ee32d4a.js" defer></script>
+  </body>
+</html>
